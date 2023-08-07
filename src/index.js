@@ -4,9 +4,10 @@ import Phaser from 'phaser';
 import PlayScene from './PlayScene';
 import PreloadScene from './PreloadScene';
 
+
 const config = {
   type: Phaser.AUTO,
-  width: 1000,
+  width: 1680,
   height: 340,
   pixelArt: true,
   transparent: true,

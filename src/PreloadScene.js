@@ -13,11 +13,11 @@ class PreloadScene extends Phaser.Scene {
     this.load.audio('reach', 'assets/reach.m4a');
 
     this.load.image('ground', 'assets/ground.png');
-    this.load.image('dino-idle', 'assets/dino-idle.png');
-    this.load.image('dino-hurt', 'assets/dino-hurt.png');
+    this.load.image('donkey-idle', 'assets/donkey_idle.png');
+    this.load.image('donkey-hurt', 'assets/donkey_hurt.png');
     this.load.image('restart', 'assets/restart.png');
     this.load.image('game-over', 'assets/game-over.png');
-    this.load.image('cloud', 'assets/cloud.png');
+    this.load.image('cloud', 'assets/pink-cloud.png');
 
     this.load.spritesheet('star', 'assets/stars.png', {
       frameWidth: 9, frameHeight: 9
@@ -42,12 +42,12 @@ class PreloadScene extends Phaser.Scene {
       frameHeight: 77
     })
 
-    this.load.image('obsticle-1', 'assets/cactuses_small_1.png')
-    this.load.image('obsticle-2', 'assets/cactuses_small_2.png')
-    this.load.image('obsticle-3', 'assets/cactuses_small_3.png')
-    this.load.image('obsticle-4', 'assets/cactuses_big_1.png')
-    this.load.image('obsticle-5', 'assets/cactuses_big_2.png')
-    this.load.image('obsticle-6', 'assets/cactuses_big_3.png')
+    this.load.image('obsticle-1', 'assets/flax_small_1.png')
+    this.load.image('obsticle-2', 'assets/flax_small_2.png')
+    this.load.image('obsticle-3', 'assets/flax_small_3.png')
+    this.load.image('obsticle-4', 'assets/flax_big_1.png')
+    this.load.image('obsticle-5', 'assets/flax_big_2.png')
+    this.load.image('obsticle-6', 'assets/flax_big_3.png')
   }
 
   create() {

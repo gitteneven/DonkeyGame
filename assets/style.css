@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Highgate';
+    font-weight: 700;
+    src: url('../assets/Highgate_Trial_Bd.ttf');
+}
+@font-face {
+    font-family: 'Highgate';
+    font-weight: 900;
+    src: url('../assets/Highgate_Trial_XBd.ttf');
+}
+
+.test{
+    font-family: 'Highgate';
+}
