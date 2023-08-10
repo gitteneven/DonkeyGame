@@ -14,7 +14,7 @@ class PreloadScene extends Phaser.Scene {
 
     this.load.image('ground', 'assets/ground_smaller.png');
     this.load.image('donkey-idle', 'assets/donkey_idle.png');
-    this.load.image('donkey-hurt', 'assets/donkey_hurt.png');
+    this.load.image('donkey-hurt', 'assets/donkey_dead.png');
     this.load.image('restart', 'assets/restart.png');
     this.load.image('game-over', 'assets/game-over.png');
     this.load.image('cloud', 'assets/cloud_2x.png');
@@ -22,13 +22,13 @@ class PreloadScene extends Phaser.Scene {
 
     //aangepast door Gitte
     this.load.spritesheet('donkey', 'assets/donkey-run.png', {
-      frameWidth: 88,
-      frameHeight: 94
+      frameWidth: 264,
+      frameHeight: 282
     })
 
     this.load.spritesheet('enemy-bird', 'assets/bird_sprite.png', {
-      frameWidth: 92,
-      frameHeight: 81
+      frameWidth: 144,
+      frameHeight: 128
     })
 
     this.load.image('obsticle-1', 'assets/flax_small_1.png')

@@ -13,11 +13,11 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: false
+      debug: true
     }
   },
   scene: [PreloadScene, PlayScene]
 };
 
 const game = new Phaser.Game(config);
-game.config.offsetHeightDino = 92;
+game.config.offsetHeightdonkey = 92;
