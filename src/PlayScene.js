@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+let collided = false;
 
 class PlayScene extends Phaser.Scene {
 
@@ -13,6 +14,8 @@ class PlayScene extends Phaser.Scene {
     this.isGameRunning = false;
     this.respawnTime = 0;
     this.score = 0;
+
+    
 
     this.jumpSound = this.sound.add('jump', {volume: 0.2});
     this.hitSound = this.sound.add('hit', {volume: 0.2});
@@ -45,7 +48,7 @@ class PlayScene extends Phaser.Scene {
         this.add.image((width / 1.5), 150, 'cloudFlip'),
         this.add.image(width , 230, 'cloud'),
       ]);
-      this.environment.setAlpha(0);
+      this.environment.setAlpha(1);
 
     this.gameOverScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(0);
     this.gameOverText = this.add.text(-225, -25, "WAT EEN TOPSCORE!", {fill: "#000000", font: '700 48px Highgate', resolution: 0});
@@ -82,6 +85,8 @@ class PlayScene extends Phaser.Scene {
       this.gameOverScreen.setAlpha(1);
       this.score = 0;
       this.hitSound.play();
+      collided = true
+
     }, null, this);
   }
 
@@ -102,11 +107,7 @@ class PlayScene extends Phaser.Scene {
         callbackScope: this,
         callback: () => {
           this.donkey.setVelocityX(80);
-          this.donkey.play('donkey-run', 1);
-
-          // if (this.ground.width < width) {
-          //   this.ground.width += 17 * 2;
-          // }
+          this.donkey.play('donkey-run', 0);
 
           this.ground.width = width;
           this.isGameRunning = true;
@@ -114,9 +115,6 @@ class PlayScene extends Phaser.Scene {
           this.scoreText.setAlpha(1);
           this.environment.setAlpha(1); 
           startEvent.remove();
-
-          // if (this.ground.width >= 2400) {
-          // }
         }
       });
     }, null, this)
@@ -177,13 +175,28 @@ class PlayScene extends Phaser.Scene {
 
     this.input.keyboard.on('keydown_SPACE', () => {
       console.log('pressing space');
-      if (!this.donkey.body.onFloor() || this.donkey.body.velocity.x > 0) { console.log( 'din o is on floor.'); return; }
+      console.log(this.score)
+      if(!collided){
+      if (!this.donkey.body.onFloor() || this.donkey.body.velocity.x > 0) 
+      { console.log( 'din o is on floor.'); return; }
+      this.donkey.setTexture('donkey', 0);
       console.log('passed test');
       this.jumpSound.play();
       this.donkey.body.offset.y = offsetHeightdonkey;
       this.donkey.setVelocityY(-2000); 
-      this.donkey.setTexture('donkey', 0);
-    })
+    } else {
+      console.log('restart');
+      this.donkey.setVelocityY(0);
+      this.donkey.body.height = 282;
+      this.donkey.body.offset.y = offsetHeightdonkey;
+      this.physics.resume();
+      this.obstacles.clear(true, true);
+      this.isGameRunning = true;
+      this.gameOverScreen.setAlpha(0);
+      this.anims.resumeAll();
+      collided = false;
+    }}
+    )
 
   }
 
@@ -232,9 +245,17 @@ class PlayScene extends Phaser.Scene {
 
     this.environment.getChildren().forEach(env => {
       if (env.getBounds().right < 0) {
-        env.x = this.game.config.width + 30;
+        env.x = this.game.config.width + 100;
       }
     })
+
+    if (this.donkey.body.deltaAbsY() > 0) {
+      this.donkey.anims.stop();
+      this.donkey.setTexture('donkey', 0);
+    } else {
+      this.donkey.play('donkey-run', 1);
+
+    }
 
   }
 }

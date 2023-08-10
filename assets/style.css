@@ -9,6 +9,13 @@
     src: url('../assets/Highgate_Trial_XBd.ttf');
 }
 
+html,
+body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden
+}
+
 .test{
     font-family: 'Highgate';
 }
