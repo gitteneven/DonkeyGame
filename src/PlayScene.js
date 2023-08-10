@@ -8,7 +8,7 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     const { height, width } = this.game.config;
-    this.gameSpeed = 10;
+    this.gameSpeed = 6;
     this.isGameRunning = false;
     this.respawnTime = 0;
     this.score = 0;
@@ -17,14 +17,14 @@ class PlayScene extends Phaser.Scene {
     this.hitSound = this.sound.add('hit', {volume: 0.2});
     this.reachSound = this.sound.add('reach', {volume:0.2})
 
-    this.startTrigger = this.physics.add.sprite(0, 10).setOrigin(0, 1).setImmovable();
+    this.startTrigger = this.physics.add.sprite(0, height).setOrigin(0, 1).setImmovable();
    // aanpassen!!
     this.ground = this.add.tileSprite(0, height, 88, 26, 'ground').setOrigin(0, 1)
     //aanpassen!!!
     this.dino = this.physics.add.sprite(0, height, 'donkey-idle')
       .setCollideWorldBounds(true)
       .setGravityY(5000)
-      .setBodySize(44, 92)
+      .setBodySize(88, 184)
       .setDepth(1)
       .setOrigin(0, 1);
 
@@ -85,8 +85,9 @@ class PlayScene extends Phaser.Scene {
   initStartTrigger() {
     const { width, height } = this.game.config;
     this.physics.add.overlap(this.startTrigger, this.dino, () => {
-      if (this.startTrigger.y === 10) {
+      if (this.startTrigger.y === height-200) {
         this.startTrigger.body.reset(0, height);
+        console.log('not restarting game');
         return;
       }
 
