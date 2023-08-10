@@ -9,7 +9,6 @@ const config = {
   type: Phaser.CANVAS,
   width: window.innerWidth,
   height: window.innerHeight,
-  pixelArt: false,
   transparent: true,
   physics: {
     default: 'arcade',
@@ -20,4 +19,5 @@ const config = {
   scene: [PreloadScene, PlayScene]
 };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
+game.config.offsetHeightDino = 92;

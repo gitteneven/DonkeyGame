@@ -12,7 +12,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.audio('hit', 'assets/hit.m4a');
     this.load.audio('reach', 'assets/reach.m4a');
 
-    this.load.image('ground', 'assets/ground.png');
+    this.load.image('ground', 'assets/ground_smaller.png');
     this.load.image('donkey-idle', 'assets/donkey_idle.png');
     this.load.image('donkey-hurt', 'assets/donkey_hurt.png');
     this.load.image('restart', 'assets/restart.png');

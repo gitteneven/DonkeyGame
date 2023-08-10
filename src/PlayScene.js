@@ -8,6 +8,7 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     const { height, width } = this.game.config;
+    const offsetHeightDino = this.game.config.offsetHeightDino;
     this.gameSpeed = 6;
     this.isGameRunning = false;
     this.respawnTime = 0;
@@ -17,14 +18,18 @@ class PlayScene extends Phaser.Scene {
     this.hitSound = this.sound.add('hit', {volume: 0.2});
     this.reachSound = this.sound.add('reach', {volume:0.2})
 
-    this.startTrigger = this.physics.add.sprite(0, height).setOrigin(0, 1).setImmovable();
-    this.ground = this.add.tileSprite(0, height, 88, 26, 'ground').setOrigin(0, 1)
-    this.donkey = this.physics.add.sprite(0, height, 'donkey-idle')
+    this.startTrigger = this.physics.add.sprite(0, height - offsetHeightDino*3, 'restart').setOrigin(0, 1).setImmovable();
+    // this.ground = this.add.tileSprite(0, height, 10, 0, 'ground').setOrigin(0, 1);
+    // this.ground = this.add.tileSprite(0, height, 0, height, 'ground').setOrigin(0, 1).setScale(1 ,1);
+    this.ground = this.add.tileSprite(0, height, 0, offsetHeightDino, 'ground').setOrigin(0, 1);
+    this.dino = this.physics.add.sprite(0, height-height*.3, 'donkey-idle')
       .setCollideWorldBounds(true)
       .setGravityY(5000)
       .setBodySize(88, 184)
       .setDepth(1)
       .setOrigin(0, 1);
+
+    this.dino.body.offset.y = offsetHeightDino;
 
     this.scoreText = this.add.text(width-25, 0, "0", {fill: "#000000", font: '700 48px Highgate', resolution: 0})
       .setOrigin(1, 0)
@@ -49,7 +54,7 @@ class PlayScene extends Phaser.Scene {
       this.gameOverText,  this.restart
     ])
 
-    this.obsticles = this.physics.add.group();
+    this.obstacles = this.physics.add.group();
 
     this.initAnims();
     this.initStartTrigger();
@@ -59,7 +64,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   initColliders() {
-    this.physics.add.collider(this.donkey, this.obsticles, () => {
+    this.physics.add.collider(this.dino, this.obstacles, () => {
       this.highScoreText.x = this.scoreText.x - this.scoreText.width - 100;
 
       const highScore = this.highScoreText.text.substr(this.highScoreText.text.length - 3);
@@ -82,9 +87,9 @@ class PlayScene extends Phaser.Scene {
 
   initStartTrigger() {
     const { width, height } = this.game.config;
-    this.physics.add.overlap(this.startTrigger, this.donkey, () => {
-      if (this.startTrigger.y === height-200) {
-        this.startTrigger.body.reset(0, height);
+    this.physics.add.overlap(this.startTrigger, this.dino, () => {
+      if (this.startTrigger.y === height - this.game.config.offsetHeightDino) {
+        this.startTrigger.body.reset(0, height - this.game.config.offsetHeightDino*3);
         console.log('not restarting game');
         return;
       }
@@ -99,18 +104,19 @@ class PlayScene extends Phaser.Scene {
           this.donkey.setVelocityX(80);
           this.donkey.play('donkey-run', 1);
 
-          if (this.ground.width < width) {
-            this.ground.width += 17 * 2;
-          }
+          // if (this.ground.width < width) {
+          //   this.ground.width += 17 * 2;
+          // }
 
-          if (this.ground.width >= 1000) {
-            this.ground.width = width;
-            this.isGameRunning = true;
-            this.donkey.setVelocityX(0);
-            this.scoreText.setAlpha(1);
-            this.environment.setAlpha(1);
-            startEvent.remove();
-          }
+          this.ground.width = width;
+          this.isGameRunning = true;
+          this.dino.setVelocityX(0);
+          this.scoreText.setAlpha(1);
+          this.environment.setAlpha(1); 
+          startEvent.remove();
+
+          // if (this.ground.width >= 2400) {
+          // }
         }
       });
     }, null, this)
@@ -173,58 +179,62 @@ class PlayScene extends Phaser.Scene {
   }
 
   handleInputs() {
+    const offsetHeightDino = this.game.config.offsetHeightDino;
+
     this.restart.on('pointerdown', () => {
-      this.donkey.setVelocityY(0);
-      this.donkey.body.height = 92;
-      this.donkey.body.offset.y = 0;
+      this.dino.setVelocityY(0);
+      this.dino.body.height = offsetHeightDino + 92;
+      this.dino.body.offset.y = offsetHeightDino;
       this.physics.resume();
-      this.obsticles.clear(true, true);
+      this.obstacles.clear(true, true);
       this.isGameRunning = true;
       this.gameOverScreen.setAlpha(0);
       this.anims.resumeAll();
     })
 
     this.input.keyboard.on('keydown_SPACE', () => {
-      if (!this.donkey.body.onFloor() || this.donkey.body.velocity.x > 0) { return; }
-
+      console.log('pressing space');
+      if (!this.dino.body.onFloor() || this.dino.body.velocity.x > 0) { console.log( 'din o is on floor.'); return; }
+      console.log('passed test');
       this.jumpSound.play();
-      this.donkey.body.height = 92;
-      this.donkey.body.offset.y = 0;
-      this.donkey.setVelocityY(-1600);
-      this.donkey.setTexture('donkey', 0);
+      this.dino.body.height = offsetHeightDino + 92;
+      this.dino.body.offset.y = offsetHeightDino;
+      this.dino.setVelocityY(-1600); 
+      this.dino.setTexture('dino', 0);
     })
 
     this.input.keyboard.on('keydown_DOWN', () => {
       if (!this.donkey.body.onFloor() || !this.isGameRunning) { return; }
 
-      this.donkey.body.height = 58;
-      this.donkey.body.offset.y = 34;
+      this.dino.body.height = offsetHeightDino + 58;
+      this.dino.body.offset.y = offsetHeightDino + 34;
     })
 
     this.input.keyboard.on('keyup_DOWN', () => {
       if ((this.score !== 0 && !this.isGameRunning)) { return; }
 
-      this.donkey.body.height = 92;
-      this.donkey.body.offset.y = 0;
+      this.dino.body.height = offsetHeightDino + 92;
+      this.dino.body.offset.y = offsetHeightDino;
     })
   }
 
   placeObsticle() {
+    const offsetHeightDino = this.game.config.offsetHeightDino;
     const obsticleNum = Math.floor(Math.random() * 7) + 1;
     const distance = Phaser.Math.Between(600, 900);
 
     let obsticle;
     if (obsticleNum > 6) {
       const enemyHeight = [20, 50];
-      obsticle = this.obsticles.create(this.game.config.width + distance, this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
+      obsticle = this.obstacles.create(this.game.config.width + distance, this.game.config.height - offsetHeightDino - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
         .setOrigin(0, 1)
         obsticle.play('enemy-donkey-fly', 1);
       obsticle.body.height = obsticle.body.height / 1.5;
     } else {
-      obsticle = this.obsticles.create(this.game.config.width + distance, this.game.config.height, `obsticle-${obsticleNum}`)
+      obsticle = this.obstacles.create(this.game.config.width + distance, this.game.config.height - offsetHeightDino * 2, `obsticle-${obsticleNum}`)
         .setOrigin(0, 1);
 
-     obsticle.body.offset.y = +10;
+      obsticle.body.offset.y = offsetHeightDino * 2;
     }
 
     obsticle.setImmovable();
@@ -234,7 +244,7 @@ class PlayScene extends Phaser.Scene {
     if (!this.isGameRunning) { return; }
 
     this.ground.tilePositionX += this.gameSpeed;
-    Phaser.Actions.IncX(this.obsticles.getChildren(), -this.gameSpeed);
+    Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
     Phaser.Actions.IncX(this.environment.getChildren(), - 0.5);
 
     this.respawnTime += delta * this.gameSpeed * 0.08;
@@ -243,11 +253,11 @@ class PlayScene extends Phaser.Scene {
       this.respawnTime = 0;
     }
 
-    this.obsticles.getChildren().forEach(obsticle => {
+    this.obstacles.getChildren().forEach(obsticle => {
       if (obsticle.getBounds().right < 0) {
-        this.obsticles.killAndHide(obsticle);
+        this.obstacles.killAndHide(obsticle);
       }
-    })
+    }) 
 
     this.environment.getChildren().forEach(env => {
       if (env.getBounds().right < 0) {
