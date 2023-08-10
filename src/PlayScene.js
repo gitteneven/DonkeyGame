@@ -18,9 +18,7 @@ class PlayScene extends Phaser.Scene {
     this.reachSound = this.sound.add('reach', {volume:0.2})
 
     this.startTrigger = this.physics.add.sprite(0, height).setOrigin(0, 1).setImmovable();
-   // aanpassen!!
     this.ground = this.add.tileSprite(0, height, 88, 26, 'ground').setOrigin(0, 1)
-    //aanpassen!!!
     this.dino = this.physics.add.sprite(0, height, 'donkey-idle')
       .setCollideWorldBounds(true)
       .setGravityY(5000)
