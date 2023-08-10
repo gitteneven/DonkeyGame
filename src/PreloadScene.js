@@ -17,29 +17,18 @@ class PreloadScene extends Phaser.Scene {
     this.load.image('donkey-hurt', 'assets/donkey_hurt.png');
     this.load.image('restart', 'assets/restart.png');
     this.load.image('game-over', 'assets/game-over.png');
-    this.load.image('cloud', 'assets/pink-cloud.png');
+    this.load.image('cloud', 'assets/cloud_2x.png');
+    this.load.image('cloudFlip', 'assets/cloud_2xFlip.png');
 
-    this.load.spritesheet('star', 'assets/stars.png', {
-      frameWidth: 9, frameHeight: 9
-    });
-
-    this.load.spritesheet('moon', 'assets/moon.png', {
-      frameWidth: 20, frameHeight: 40
-    });
-
-    this.load.spritesheet('dino', 'assets/dino-run.png', {
+    //aangepast door Gitte
+    this.load.spritesheet('donkey', 'assets/donkey-run.png', {
       frameWidth: 88,
       frameHeight: 94
     })
 
-    this.load.spritesheet('dino-down', 'assets/dino-down.png', {
-      frameWidth: 118,
-      frameHeight: 94
-    })
-
-    this.load.spritesheet('enemy-bird', 'assets/enemy-bird.png', {
+    this.load.spritesheet('enemy-bird', 'assets/bird_sprite.png', {
       frameWidth: 92,
-      frameHeight: 77
+      frameHeight: 81
     })
 
     this.load.image('obsticle-1', 'assets/flax_small_1.png')

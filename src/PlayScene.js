@@ -19,7 +19,7 @@ class PlayScene extends Phaser.Scene {
 
     this.startTrigger = this.physics.add.sprite(0, height).setOrigin(0, 1).setImmovable();
     this.ground = this.add.tileSprite(0, height, 88, 26, 'ground').setOrigin(0, 1)
-    this.dino = this.physics.add.sprite(0, height, 'donkey-idle')
+    this.donkey = this.physics.add.sprite(0, height, 'donkey-idle')
       .setCollideWorldBounds(true)
       .setGravityY(5000)
       .setBodySize(88, 184)
@@ -36,9 +36,9 @@ class PlayScene extends Phaser.Scene {
 
       this.environment = this.add.group();
       this.environment.addMultiple([
-        this.add.image(width / 2, 170, 'cloud'),
-        this.add.image(width - 80, 80, 'cloud'),
-        this.add.image((width / 1.3), 100, 'cloud')
+        this.add.image(width / 2.7, 275, 'cloud'),
+        this.add.image((width / 1.5), 150, 'cloudFlip'),
+        this.add.image(width , 230, 'cloud'),
       ]);
       this.environment.setAlpha(0);
 
@@ -59,7 +59,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   initColliders() {
-    this.physics.add.collider(this.dino, this.obsticles, () => {
+    this.physics.add.collider(this.donkey, this.obsticles, () => {
       this.highScoreText.x = this.scoreText.x - this.scoreText.width - 100;
 
       const highScore = this.highScoreText.text.substr(this.highScoreText.text.length - 3);
@@ -71,7 +71,7 @@ class PlayScene extends Phaser.Scene {
       this.physics.pause();
       this.isGameRunning = false;
       this.anims.pauseAll();
-      this.dino.setTexture('donkey-hurt');
+      this.donkey.setTexture('donkey-hurt');
       this.respawnTime = 0;
       this.gameSpeed = 10;
       this.gameOverScreen.setAlpha(1);
@@ -82,7 +82,7 @@ class PlayScene extends Phaser.Scene {
 
   initStartTrigger() {
     const { width, height } = this.game.config;
-    this.physics.add.overlap(this.startTrigger, this.dino, () => {
+    this.physics.add.overlap(this.startTrigger, this.donkey, () => {
       if (this.startTrigger.y === height-200) {
         this.startTrigger.body.reset(0, height);
         console.log('not restarting game');
@@ -96,8 +96,8 @@ class PlayScene extends Phaser.Scene {
         loop: true,
         callbackScope: this,
         callback: () => {
-          this.dino.setVelocityX(80);
-          this.dino.play('dino-run', 1);
+          this.donkey.setVelocityX(80);
+          this.donkey.play('donkey-run', 1);
 
           if (this.ground.width < width) {
             this.ground.width += 17 * 2;
@@ -106,7 +106,7 @@ class PlayScene extends Phaser.Scene {
           if (this.ground.width >= 1000) {
             this.ground.width = width;
             this.isGameRunning = true;
-            this.dino.setVelocityX(0);
+            this.donkey.setVelocityX(0);
             this.scoreText.setAlpha(1);
             this.environment.setAlpha(1);
             startEvent.remove();
@@ -118,21 +118,21 @@ class PlayScene extends Phaser.Scene {
 
   initAnims() {
     this.anims.create({
-      key: 'dino-run',
-      frames: this.anims.generateFrameNumbers('dino', {start: 2, end: 3}),
+      key: 'donkey-run',
+      frames: this.anims.generateFrameNumbers('donkey', {start: 1, end: 5}),
       frameRate: 10,
       repeat: -1
     })
 
     this.anims.create({
-      key: 'dino-down-anim',
-      frames: this.anims.generateFrameNumbers('dino-down', {start: 0, end: 1}),
+      key: 'donkey-down-anim',
+      frames: this.anims.generateFrameNumbers('donkey-down', {start: 0, end: 1}),
       frameRate: 10,
       repeat: -1
     })
 
     this.anims.create({
-      key: 'enemy-dino-fly',
+      key: 'enemy-donkey-fly',
       frames: this.anims.generateFrameNumbers('enemy-bird', {start: 0, end: 1}),
       frameRate: 6,
       repeat: -1
@@ -174,9 +174,9 @@ class PlayScene extends Phaser.Scene {
 
   handleInputs() {
     this.restart.on('pointerdown', () => {
-      this.dino.setVelocityY(0);
-      this.dino.body.height = 92;
-      this.dino.body.offset.y = 0;
+      this.donkey.setVelocityY(0);
+      this.donkey.body.height = 92;
+      this.donkey.body.offset.y = 0;
       this.physics.resume();
       this.obsticles.clear(true, true);
       this.isGameRunning = true;
@@ -185,27 +185,27 @@ class PlayScene extends Phaser.Scene {
     })
 
     this.input.keyboard.on('keydown_SPACE', () => {
-      if (!this.dino.body.onFloor() || this.dino.body.velocity.x > 0) { return; }
+      if (!this.donkey.body.onFloor() || this.donkey.body.velocity.x > 0) { return; }
 
       this.jumpSound.play();
-      this.dino.body.height = 92;
-      this.dino.body.offset.y = 0;
-      this.dino.setVelocityY(-1600);
-      this.dino.setTexture('dino', 0);
+      this.donkey.body.height = 92;
+      this.donkey.body.offset.y = 0;
+      this.donkey.setVelocityY(-1600);
+      this.donkey.setTexture('donkey', 0);
     })
 
     this.input.keyboard.on('keydown_DOWN', () => {
-      if (!this.dino.body.onFloor() || !this.isGameRunning) { return; }
+      if (!this.donkey.body.onFloor() || !this.isGameRunning) { return; }
 
-      this.dino.body.height = 58;
-      this.dino.body.offset.y = 34;
+      this.donkey.body.height = 58;
+      this.donkey.body.offset.y = 34;
     })
 
     this.input.keyboard.on('keyup_DOWN', () => {
       if ((this.score !== 0 && !this.isGameRunning)) { return; }
 
-      this.dino.body.height = 92;
-      this.dino.body.offset.y = 0;
+      this.donkey.body.height = 92;
+      this.donkey.body.offset.y = 0;
     })
   }
 
@@ -218,7 +218,7 @@ class PlayScene extends Phaser.Scene {
       const enemyHeight = [20, 50];
       obsticle = this.obsticles.create(this.game.config.width + distance, this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
         .setOrigin(0, 1)
-        obsticle.play('enemy-dino-fly', 1);
+        obsticle.play('enemy-donkey-fly', 1);
       obsticle.body.height = obsticle.body.height / 1.5;
     } else {
       obsticle = this.obsticles.create(this.game.config.width + distance, this.game.config.height, `obsticle-${obsticleNum}`)
@@ -255,12 +255,6 @@ class PlayScene extends Phaser.Scene {
       }
     })
 
-    if (this.dino.body.deltaAbsY() > 0) {
-      this.dino.anims.stop();
-      this.dino.setTexture('dino', 0);
-    } else {
-      this.dino.body.height <= 58 ? this.dino.play('dino-down-anim', true) : this.dino.play('dino-run', true);
-    }
   }
 }
 
