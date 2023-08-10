@@ -22,10 +22,10 @@ class PlayScene extends Phaser.Scene {
     // this.ground = this.add.tileSprite(0, height, 10, 0, 'ground').setOrigin(0, 1);
     // this.ground = this.add.tileSprite(0, height, 0, height, 'ground').setOrigin(0, 1).setScale(1 ,1);
     this.ground = this.add.tileSprite(0, height, 0, offsetHeightdonkey, 'ground').setOrigin(0, 1);
-    this.donkey = this.physics.add.sprite(0, height-height*.3, 'donkey-idle')
+    this.donkey = this.physics.add.sprite(0, height-offsetHeightdonkey, 'donkey-idle')
       .setCollideWorldBounds(true)
-      .setGravityY(5000)
-      .setBodySize(264, 282)
+      .setGravityY(4700)
+      .setBodySize(176, 282)
       .setDepth(1)
       .setOrigin(0, 1);
 
@@ -180,9 +180,8 @@ class PlayScene extends Phaser.Scene {
       if (!this.donkey.body.onFloor() || this.donkey.body.velocity.x > 0) { console.log( 'din o is on floor.'); return; }
       console.log('passed test');
       this.jumpSound.play();
-      this.donkey.body.height = offsetHeightdonkey + 92;
       this.donkey.body.offset.y = offsetHeightdonkey;
-      this.donkey.setVelocityY(-1800); 
+      this.donkey.setVelocityY(-2000); 
       this.donkey.setTexture('donkey', 0);
     })
 
@@ -196,7 +195,7 @@ class PlayScene extends Phaser.Scene {
     let obsticle;
     if (obsticleNum > 6) {
       const enemyHeight = [30, 50];
-      obsticle = this.obstacles.create(this.game.config.width + distance, this.game.config.height - offsetHeightdonkey * 2 - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
+      obsticle = this.obstacles.create(this.game.config.width + distance, this.game.config.height - offsetHeightdonkey * 1.5 - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
         .setOrigin(0, 1)
         obsticle.play('enemy-donkey-fly', 1);
       obsticle.body.height = obsticle.body.height / 1.5;
