@@ -20,4 +20,4 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-game.config.offsetHeightdonkey = 92;
+game.config.offsetHeightdonkey = 176;
