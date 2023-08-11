@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 let collided = false;
+let endscore;
 
 class PlayScene extends Phaser.Scene {
 
@@ -52,9 +53,11 @@ class PlayScene extends Phaser.Scene {
 
     this.gameOverScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(0);
     this.gameOverText = this.add.text(-225, -25, "WAT EEN TOPSCORE!", {fill: "#000000", font: '700 48px Highgate', resolution: 0});
+
+    this.icon = this.add.image(-100, -80, 'icon');
     this.restart = this.add.image(0, 80, 'restart').setInteractive();
     this.gameOverScreen.add([
-      this.gameOverText,  this.restart
+      this.gameOverText, this.icon, this.restart
     ])
 
     this.obstacles = this.physics.add.group();
@@ -67,6 +70,8 @@ class PlayScene extends Phaser.Scene {
   }
 
   initColliders() {
+    const { width, height } = this.game.config;
+
     this.physics.add.collider(this.donkey, this.obstacles, () => {
       this.highScoreText.x = this.scoreText.x - this.scoreText.width - 100;
 
@@ -76,6 +81,10 @@ class PlayScene extends Phaser.Scene {
       this.highScoreText.setText('HI ' + newScore);
       this.highScoreText.setAlpha(1);
 
+     endscore= this.score;
+     (console.log(endscore))
+      this.gameOverScore = this.add.text(width/2, (height/2)-100, endscore, {fill: "#000000", font: '700 48px Highgate', resolution: 0});
+      console.log(this.gameOverScore)
       this.physics.pause();
       this.isGameRunning = false;
       this.anims.pauseAll();
@@ -192,6 +201,7 @@ class PlayScene extends Phaser.Scene {
       this.physics.resume();
       this.obstacles.clear(true, true);
       this.isGameRunning = true;
+      this.gameOverScore.setAlpha(0)
       this.gameOverScreen.setAlpha(0);
       this.anims.resumeAll();
       collided = false;
