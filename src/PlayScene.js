@@ -25,7 +25,7 @@ class PlayScene extends Phaser.Scene {
     this.startTrigger = this.physics.add.sprite(0, height - offsetHeightdonkey*3, 'restart').setOrigin(0, 1).setImmovable().setAlpha(0);
     // this.ground = this.add.tileSprite(0, height, 10, 0, 'ground').setOrigin(0, 1);
     // this.ground = this.add.tileSprite(0, height, 0, height, 'ground').setOrigin(0, 1).setScale(1 ,1);
-    this.ground = this.add.tileSprite(0, height, width, offsetHeightdonkey+10, 'ground').setOrigin(0, 1);
+    this.ground = this.add.tileSprite(0, height, width, offsetHeightdonkey+15, 'ground').setOrigin(0, 1);
     this.donkey = this.physics.add.sprite(0, height-offsetHeightdonkey, 'donkey-idle')
       .setCollideWorldBounds(true)
       .setGravityY(4700)
@@ -237,8 +237,12 @@ class PlayScene extends Phaser.Scene {
       obsticle = this.obstacles.create(this.game.config.width + distance, (this.game.config.height - offsetHeightdonkey )+2, `obsticle-${obsticleNum}`)
         .setOrigin(0, 1)
         .setDepth(-1);
+      
+       obsticle.body.height = obsticle.body.height/1.7;
+       obsticle.body.width = obsticle.body.width-45;
 
-      obsticle.body.offset.y = offsetHeightdonkey;
+
+      obsticle.body.offset.y = offsetHeightdonkey+45;
     }
 
     obsticle.setImmovable();
