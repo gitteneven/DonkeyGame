@@ -54,7 +54,7 @@ class PlayScene extends Phaser.Scene {
     this.gameOverScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(0);
     this.gameOverText = this.add.text(-225, -25, "WAT EEN TOPSCORE!", {fill: "#000000", font: '700 48px Highgate', resolution: 0});
 
-    this.icon = this.add.image(-100, -80, 'icon');
+    this.icon = this.add.image(-50, -80, 'icon');
     this.restart = this.add.image(0, 80, 'restart').setInteractive();
     this.gameOverScreen.add([
       this.gameOverText, this.icon, this.restart
@@ -83,7 +83,7 @@ class PlayScene extends Phaser.Scene {
 
      endscore= this.score;
      (console.log(endscore))
-      this.gameOverScore = this.add.text(width/2, (height/2)-100, endscore, {fill: "#000000", font: '700 48px Highgate', resolution: 0});
+      this.gameOverScore = this.add.text(width/2, (height/2)-155, endscore, {fill: "#000000", font: '700 48px Highgate', resolution: 0});
       console.log(this.gameOverScore)
       this.physics.pause();
       this.isGameRunning = false;
