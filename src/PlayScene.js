@@ -22,7 +22,7 @@ class PlayScene extends Phaser.Scene {
     this.hitSound = this.sound.add('hit', {volume: 0.2});
     this.reachSound = this.sound.add('reach', {volume:0.2})
 
-    this.startTrigger = this.physics.add.sprite(0, height - offsetHeightdonkey*3, 'restart').setOrigin(0, 1).setImmovable();
+    this.startTrigger = this.physics.add.sprite(0, height - offsetHeightdonkey*3, 'restart').setOrigin(0, 1).setImmovable().setAlpha(0);
     // this.ground = this.add.tileSprite(0, height, 10, 0, 'ground').setOrigin(0, 1);
     // this.ground = this.add.tileSprite(0, height, 0, height, 'ground').setOrigin(0, 1).setScale(1 ,1);
     this.ground = this.add.tileSprite(0, height, width, offsetHeightdonkey+10, 'ground').setOrigin(0, 1);
