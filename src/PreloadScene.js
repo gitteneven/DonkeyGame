@@ -20,8 +20,9 @@ class PreloadScene extends Phaser.Scene {
     this.load.image('game-over', 'assets/game-over.png');
     this.load.image('cloud', 'assets/cloud_2x.png');
     this.load.image('cloudFlip', 'assets/cloud_2xFlip.png');
+    this.load.image('house1', 'assets/house.png');
+    this.load.image('house2', 'assets/house2.png');
 
-    //aangepast door Gitte
     this.load.spritesheet('donkey', 'assets/donkey-run.png', {
       frameWidth: 264,
       frameHeight: 282

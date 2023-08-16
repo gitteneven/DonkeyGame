@@ -11,7 +11,7 @@ class PlayScene extends Phaser.Scene {
   create() {
     const { height, width } = this.game.config;
     const offsetHeightdonkey = this.game.config.offsetHeightdonkey;
-    this.gameSpeed = 6;
+    this.gameSpeed = 10;
     this.isGameRunning = false;
     this.respawnTime = 0;
     this.score = 0;
@@ -25,7 +25,7 @@ class PlayScene extends Phaser.Scene {
     this.startTrigger = this.physics.add.sprite(0, height - offsetHeightdonkey*3, 'restart').setOrigin(0, 1).setImmovable();
     // this.ground = this.add.tileSprite(0, height, 10, 0, 'ground').setOrigin(0, 1);
     // this.ground = this.add.tileSprite(0, height, 0, height, 'ground').setOrigin(0, 1).setScale(1 ,1);
-    this.ground = this.add.tileSprite(0, height, 0, offsetHeightdonkey, 'ground').setOrigin(0, 1);
+    this.ground = this.add.tileSprite(0, height, width, offsetHeightdonkey+10, 'ground').setOrigin(0, 1);
     this.donkey = this.physics.add.sprite(0, height-offsetHeightdonkey, 'donkey-idle')
       .setCollideWorldBounds(true)
       .setGravityY(4700)
@@ -35,11 +35,16 @@ class PlayScene extends Phaser.Scene {
 
     this.donkey.body.offset.y = offsetHeightdonkey;
 
-    this.scoreText = this.add.text(width-25, 0, "0", {fill: "#000000", font: '700 48px Highgate', resolution: 0})
+    this.scoreIcon = this.add.image(width-20, 15, 'icon')
+     .setOrigin(1, 0)
+      .setAlpha(0);
+
+
+    this.scoreText = this.add.text(width-85, 15, "0", {fill: "#000000", font: '700 48px Highgate', resolution: 0})
       .setOrigin(1, 0)
       .setAlpha(0);
 
-    this.highScoreText = this.add.text(0, 0, "0", {fill: "#000000", font: '900 48px Highgate', resolution: 0})
+    this.highScoreText = this.add.text(0, 15 , "0", {fill: "#000000", font: '900 48px Highgate', resolution: 0})
       .setOrigin(1, 0)
       .setAlpha(0);
 
@@ -48,6 +53,9 @@ class PlayScene extends Phaser.Scene {
         this.add.image(width / 2.7, 275, 'cloud'),
         this.add.image((width / 1.5), 150, 'cloudFlip'),
         this.add.image(width , 230, 'cloud'),
+        this.add.image(width+1500 , 525, 'house1').setDepth(-2),
+        this.add.image(width+2500, 530, 'house2').setDepth(-2),
+        
       ]);
       this.environment.setAlpha(1);
 
@@ -55,9 +63,10 @@ class PlayScene extends Phaser.Scene {
     this.gameOverText = this.add.text(-225, -25, "WAT EEN TOPSCORE!", {fill: "#000000", font: '700 48px Highgate', resolution: 0});
 
     this.icon = this.add.image(-50, -80, 'icon');
-    this.restart = this.add.image(0, 80, 'restart').setInteractive();
+    this.restart = this.add.image(0, 140, 'restart').setInteractive();
+    this.restartText= this.add.text(-275, 50, "Druk op de knop om nog eens te spelen", {fill: "#000000", font: '700 32px Highgate', resolution: 0});
     this.gameOverScreen.add([
-      this.gameOverText, this.icon, this.restart
+      this.gameOverText, this.icon, this.restartText, this.restart
     ])
 
     this.obstacles = this.physics.add.group();
@@ -115,13 +124,14 @@ class PlayScene extends Phaser.Scene {
         loop: true,
         callbackScope: this,
         callback: () => {
-          this.donkey.setVelocityX(80);
+          // this.donkey.setVelocityX(80);
           this.donkey.play('donkey-run', 0);
 
           this.ground.width = width;
           this.isGameRunning = true;
           this.donkey.setVelocityX(0);
           this.scoreText.setAlpha(1);
+          this.scoreIcon.setAlpha(1)
           this.environment.setAlpha(1); 
           startEvent.remove();
         }
@@ -221,7 +231,7 @@ class PlayScene extends Phaser.Scene {
       obsticle = this.obstacles.create(this.game.config.width + distance, this.game.config.height - offsetHeightdonkey * 1.5 - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
         .setOrigin(0, 1)
         obsticle.play('enemy-donkey-fly', 1);
-      obsticle.body.height = obsticle.body.height / 1.5;
+      obsticle.body.height = obsticle.body.height / 1.7;
       obsticle.body.offset.y = offsetHeightdonkey * 2;
     } else {
       obsticle = this.obstacles.create(this.game.config.width + distance, (this.game.config.height - offsetHeightdonkey )+2, `obsticle-${obsticleNum}`)
@@ -255,7 +265,7 @@ class PlayScene extends Phaser.Scene {
 
     this.environment.getChildren().forEach(env => {
       if (env.getBounds().right < 0) {
-        env.x = this.game.config.width + 100;
+        env.x = this.game.config.width + 500;
       }
     })
 
